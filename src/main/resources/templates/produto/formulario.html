@@ -92,7 +92,7 @@
                         <div class="form-group row">
                             <label for="txtQuantidade" class="col-sm-2 col-form-label">Quantidade</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" 
+                                <input type="number" min="0" class="form-control" 
                                        th:classappend="${#fields.hasErrors('quantidade')}? is-invalid" 
                                        id="txtQuantidade" placeholder="Quantidade" th:field="*{quantidade}">
                                 <div class="invalid-feedback" th:if="${#fields.hasErrors('quantidade')}" th:errors="*{quantidade}">

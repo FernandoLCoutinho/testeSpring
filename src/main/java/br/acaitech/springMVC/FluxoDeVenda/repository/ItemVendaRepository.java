@@ -32,7 +32,7 @@ public class ItemVendaRepository {
     public ItemVenda findById(Long id) {
         Query jpqlQuery
                 = entityManager.createQuery(
-                        "SELECT c FROM ItemVenda I WHERE i.id = :idItem")
+                        "SELECT i FROM ItemVenda i WHERE i.id = :idItem")
                         .setParameter("idItem", id);
         ItemVenda i = (ItemVenda) jpqlQuery.getSingleResult();
         return i;

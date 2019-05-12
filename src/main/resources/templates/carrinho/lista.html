@@ -29,7 +29,7 @@
             $(function () {
                 $('#deleteModal').on('show.bs.modal', function (event) {
                     var button = $(event.relatedTarget) // Button that triggered the modal
-                    var nomeItemVenda = button.data('nomeitem') // Extract info from data-* attributes
+                    var nomeItemVenda = button.data('nomecar') // Extract info from data-* attributes
                     var actionUrl = button.data('actionurl');
                     // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
                     // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
@@ -77,9 +77,13 @@
                         </thead>
                         <tbody data-th-if="${carrinho != null}">
                             <tr data-th-each="car: ${carrinho}">
-                                <td th:text="${car.itens}"></td>
-                                <td th:text="${car.itens}"></td>
-                                <td th:text="${car.itens}"></td>
+                               <td th:text="${car.produto.nome}"></td>
+                               <td th:text="${car.itens.quantidade}"></td>
+                               <td th:text="${car.produto.precoVenda}"></td>
+                               <td>
+                                    <a data-th-href="@{/carrinho/{id}/editar(id=${car.id})}" class="btn btn-outline-primary"><i class="fa fa-pencil"></i></a>
+                                    <a href="#" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal" th:attr="data-nomecar=${car.produto.nome},data-actionurl=@{/carrinho/{id}/remover(id=${car.id})}"><i class="fa fa-trash"></i></a>
+                               </td>
                             </tr>
                         </tbody>
                     </table>

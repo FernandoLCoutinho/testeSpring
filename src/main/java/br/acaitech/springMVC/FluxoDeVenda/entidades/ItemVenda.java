@@ -33,7 +33,8 @@ public class ItemVenda implements Serializable {
     public ItemVenda() {
     }
 
-    public ItemVenda(Produto produto, Integer quantidade) {
+    public ItemVenda(Long id,Produto produto, Integer quantidade) {
+        this.id = id;
         this.produto = produto;
         this.quantidade = quantidade;
     }
@@ -62,4 +63,11 @@ public class ItemVenda implements Serializable {
         this.quantidade = quantidade;
     }
 
+    @Override
+    public String toString() {
+        return "ItemVenda{" + "id=" + id + "produto=" + produto + "quantidade=" + quantidade + '}';
+    }
+
+    
+    
 }

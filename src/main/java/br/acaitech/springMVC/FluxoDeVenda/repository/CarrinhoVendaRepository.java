@@ -5,8 +5,7 @@
  */
 package br.acaitech.springMVC.FluxoDeVenda.repository;
 
-import br.acaitech.springMVC.FluxoDeVenda.entidades.Carrinho;
-import br.acaitech.springMVC.FluxoDeVenda.entidades.ItemVenda;
+import br.acaitech.springMVC.FluxoDeVenda.entidades.CarrinhoVenda;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -19,28 +18,19 @@ import org.springframework.stereotype.Repository;
  * @author Coutinho's
  */
 @Repository
-public class CarrinhoRepository {
-    
+public class CarrinhoVendaRepository {
+
     @PersistenceContext
     private EntityManager entityManager;
-    
-    public List<Carrinho> find() {
+
+    public List<CarrinhoVenda> find() {
         Query jpqlQuery
-                = entityManager.createQuery("SELECT c FROM Carrinho c");
+                = entityManager.createQuery("SELECT c FROM CarrinhoVenda c");
         return jpqlQuery.getResultList();
     }
-    
-    public Carrinho findById(Long id) {
-        Query jpqlQuery
-                = entityManager.createQuery(
-                        "SELECT c FROM Carrinho c WHERE c.id = :idCarrinho")
-                        .setParameter("idCarrinho", id);
-        Carrinho c = (Carrinho) jpqlQuery.getSingleResult();
-        return c;
-    }
-    
+
     @Transactional
-    public void save(Carrinho c) {
+    public void save(CarrinhoVenda c) {
         if (c.getId() == null) {
             entityManager.persist(c);
         } else {
@@ -50,8 +40,8 @@ public class CarrinhoRepository {
 
     @Transactional
     public void delete(Long id) {
-        Carrinho c = entityManager.find(Carrinho.class, id);
+        CarrinhoVenda c = entityManager.find(CarrinhoVenda.class, id);
         entityManager.remove(c);
     }
-    
+
 }
