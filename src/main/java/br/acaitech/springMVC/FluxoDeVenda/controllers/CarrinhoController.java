@@ -20,6 +20,7 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -111,12 +112,11 @@ public class CarrinhoController {
                 carrinho.setProduto(listaItens.get(i).getProduto());
             }
             for (Carrinho carrinho1 : carrinhoLista) {
-                if(Objects.equals(carrinho1.getItens().getId(), carrinho.getItens().getId())){
+                if (Objects.equals(carrinho1.getItens().getId(), carrinho.getItens().getId())) {
                     redirectAttributes.addFlashAttribute("mensagemFalha", "Erro. Produto já se encontra no carrinho. Altere a quantidade");
                     return new ModelAndView("redirect:/carrinho");
                 }
             }
-                    
             carrinhoRepository.save(carrinho);
             redirectAttributes.addFlashAttribute("mensagemSucesso", item.getProduto().getNome() + " adicionado ao carrinho com sucesso.");
             return new ModelAndView("redirect:/carrinho");
@@ -125,9 +125,49 @@ public class CarrinhoController {
             return new ModelAndView("redirect:/carrinho");
         }
     }
-    
-    @GetMapping("/editar/{id}")
-    public ModelAndView editar(){
+
+    @GetMapping("/salvar/mais/{id}")
+    public ModelAndView salvarMais(
+            @PathVariable(name = "id") Long id) {
+        Carrinho c = carrinhoRepository.findById(id);
+        ItemVenda i = c.getItens();
+        int a = c.getItens().getQuantidade();
+        int estoque = c.getProduto().getQuantidade();
+        if (a <= estoque) {
+            i.setQuantidade(a + 1);
+            c.setItens(i);
+            carrinhoRepository.save(c);
+        }
+        return new ModelAndView("redirect:/carrinho");
+    }
+
+    /*ItemVenda i = carrinho.getItens();
+        int a = carrinho.getItens().getQuantidade();
+        int estoque = carrinho.getProduto().getQuantidade();
+        if(a <= estoque){
+        i.setQuantidade(a + 1);
+        carrinho.setItens(i);
+        carrinhoRepository.save(carrinho);
+        redirectAttributes.addFlashAttribute("mensagemSucesso","Quantidade alterada com sucesso");
+        return new ModelAndView("redirect:/carrinho");
+        } else {
+            redirectAttributes.addFlashAttribute("mensagemFalha","Quantidade máxima atingida, está comprando todo o nosso estoque!");
+        return new ModelAndView("redirect:/carrinho"); 
+        }
+    }*/
+
+     @GetMapping("/salvar/menos/{id}")
+    public ModelAndView salvarMenos(
+            @PathVariable(name = "id") Long id) {
+        Carrinho c = carrinhoRepository.findById(id);
+        ItemVenda i = c.getItens();
+        int a = c.getItens().getQuantidade();
+        int estoque = c.getProduto().getQuantidade();
+        if (a > 1) {
+            i.setQuantidade(a - 1);
+            c.setItens(i);
+            carrinhoRepository.save(c);
+        }
         return new ModelAndView("redirect:/carrinho");
     }
 
