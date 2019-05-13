@@ -85,21 +85,26 @@ public class CarrinhoController {
                 for (ItemVenda itemVenda : listaCarrinho) {
                     itens.add(itemVenda);
                 }
-                CarrinhoVenda carrinho = new CarrinhoVenda(itens);
-
-                carrinhoVendaRepository.save(carrinho);
-
+                List<CarrinhoVenda> carCheck = carrinhoVendaRepository.find();
+                for (CarrinhoVenda carrinhoVenda : carCheck) {
+                    if (!carrinhoVenda.getId().equals(idItem)) {
+                        CarrinhoVenda carrinho = new CarrinhoVenda(itens);
+                        carrinhoVendaRepository.save(carrinho);
+                    }
+                }
             }
             redirectAttributes.addFlashAttribute("mensagemSucesso", item.getProduto().getNome() + "" + " adicionado ao carrinho com sucesso.");
-            return new ModelAndView("redirect:/carrinho/construir").addObject("idItem", idItem);
+            return new ModelAndView("redirect:/carrinho/construir/{id}").addObject("idItem", idItem);
         } else {
             redirectAttributes.addFlashAttribute("mensagemFalha", "Erro. Produto não pode ser adicionado ao carrinho.");
             return new ModelAndView("redirect:/carrinho/construir");
         }
     }
 
-    @PostMapping("/construir")
-    public ModelAndView construirCarrinho(Long idItem, RedirectAttributes redirectAttributes) {
+    @GetMapping("/construir/{id}")
+    public ModelAndView construirCarrinho(
+            @PathVariable(name = "id") Long id, Long idItem,
+            RedirectAttributes redirectAttributes) {
         if (idItem != null) {
             Carrinho carrinho = new Carrinho();
             ItemVenda item = itemRepository.findById(idItem);
@@ -112,8 +117,8 @@ public class CarrinhoController {
                 carrinho.setProduto(listaItens.get(i).getProduto());
             }
             for (Carrinho carrinho1 : carrinhoLista) {
-                if (Objects.equals(carrinho1.getItens().getId(), carrinho.getItens().getId())) {
-                    redirectAttributes.addFlashAttribute("mensagemFalha", "Erro. Produto já se encontra no carrinho. Altere a quantidade");
+                if (Objects.equals(carrinho1.getProduto().getId(), carrinho.getProduto().getId())) {
+                    redirectAttributes.addFlashAttribute("mensagemFalha", "Erro. Produto já se encontra no carrinho.");
                     return new ModelAndView("redirect:/carrinho");
                 }
             }
@@ -128,15 +133,18 @@ public class CarrinhoController {
 
     @GetMapping("/salvar/mais/{id}")
     public ModelAndView salvarMais(
-            @PathVariable(name = "id") Long id) {
+            @PathVariable(name = "id") Long id, RedirectAttributes redirectAttributes) {
         Carrinho c = carrinhoRepository.findById(id);
         ItemVenda i = c.getItens();
         int a = c.getItens().getQuantidade();
         int estoque = c.getProduto().getQuantidade();
-        if (a <= estoque) {
+        if (a < estoque) {
             i.setQuantidade(a + 1);
             c.setItens(i);
             carrinhoRepository.save(c);
+        }
+        if(a == estoque){
+            redirectAttributes.addFlashAttribute("mensagemSucesso", "Limite máximo atingido, você já está levando todo o nosso estoque!");
         }
         return new ModelAndView("redirect:/carrinho");
     }
@@ -155,18 +163,19 @@ public class CarrinhoController {
         return new ModelAndView("redirect:/carrinho"); 
         }
     }*/
-
-     @GetMapping("/salvar/menos/{id}")
+    @GetMapping("/salvar/menos/{id}")
     public ModelAndView salvarMenos(
-            @PathVariable(name = "id") Long id) {
+            @PathVariable(name = "id") Long id, RedirectAttributes redirectAttributes) {
         Carrinho c = carrinhoRepository.findById(id);
         ItemVenda i = c.getItens();
         int a = c.getItens().getQuantidade();
-        int estoque = c.getProduto().getQuantidade();
         if (a > 1) {
             i.setQuantidade(a - 1);
             c.setItens(i);
             carrinhoRepository.save(c);
+        }
+        if(a == 1){
+            redirectAttributes.addFlashAttribute("mensagemFalha", "Para remover, utilize o botão com icone de lixo!");
         }
         return new ModelAndView("redirect:/carrinho");
     }
@@ -174,6 +183,15 @@ public class CarrinhoController {
     @GetMapping("/vender")
     public ModelAndView vender() {
         return new ModelAndView("redirect:/index");
+    }
+    
+    @PostMapping("/remover/{id}")
+    public ModelAndView remover(
+            @PathVariable(name = "id") Long id, RedirectAttributes redirectAttributes){
+        carrinhoRepository.delete(id);
+        redirectAttributes
+                .addFlashAttribute("mensagemSucesso", "Produto removido do carrinho com sucesso");
+        return new ModelAndView("redirect:/carrinho");
     }
 
 }

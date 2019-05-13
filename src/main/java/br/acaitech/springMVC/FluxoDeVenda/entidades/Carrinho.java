@@ -6,6 +6,7 @@
 package br.acaitech.springMVC.FluxoDeVenda.entidades;
 
 import java.io.Serializable;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -21,7 +22,7 @@ public class Carrinho implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    //@Column(insertable = true, updatable = false, nullable = false, unique = true)
+    @Column(insertable = true, updatable = false, nullable = false, unique = true)
     private Long id;
     
     @ManyToOne
