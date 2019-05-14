@@ -77,7 +77,7 @@
                         </thead>
                         <tbody data-th-if="${carrinho != null}">
                             <tr data-th-each="car: ${carrinho}">
-                               <td th:text="${car.produto.nome}"></td>
+                               <td th:text="${car.itens.produto.nome}"></td>
                                <td th:text="${car.itens.quantidade}"></td>
                                <td th:text="${car.produto.precoVenda}"></td>
                                <td>
