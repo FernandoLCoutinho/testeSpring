@@ -65,7 +65,9 @@
                 <h1>Carrinho</h1>
                 <div th:if="${mensagemSucesso != null}" th:text="${mensagemSucesso}" class="alert alert-success" role="alert"></div>
                 <div th:if="${mensagemFalha != null}" th:text="${mensagemFalha}" class="alert alert-danger" role="alert"></div>
-                <div>
+                <form th:action="@{/carrinho/vender}">
+                    <input type="hidden" th:if="*{id != null}" th:field="*{id}" />
+                    <!-- Itens de Venda -->
                     <table class="table table-striped table-sm">
                         <thead class="thead-dark">
                             <tr>
@@ -81,16 +83,17 @@
                                <td th:text="${car.itens.quantidade}"></td>
                                <td th:text="${car.produto.precoVenda}"></td>
                                <td>
-                                    <a data-th-href="@{/carrinho/salvar/menos/{id}(id=${car.id})}" class="btn btn-outline-primary"><i class="fa fa-minus"></i></a>
-                                    <a data-th-href="@{/carrinho/salvar/mais/{id}(id=${car.id})}" class="btn btn-outline-primary"><i class="fa fa-plus"></i></a>
+                                   <a data-th-href="@{/carrinho/salvar/menos/{id}(id=${car.id})}" class="btn btn-outline-primary"><i class="fa fa-minus"></i></a>>
+                                   <a data-th-href="@{/carrinho/salvar/mais/{id}(id=${car.id})}" class="btn btn-outline-primary"><i class="fa fa-plus"></i></a>>
                                     <a href="#" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal" th:attr="data-nomecar=${car.produto.nome},data-actionurl=@{/carrinho/remover/{id}(id=${car.id})}"><i class="fa fa-trash"></i></a>
                                </td>
                             </tr>
                         </tbody>
                     </table>
+                    <!-- Itens de Venda -->
                     <a th:href="@{/}" class="btn btn-primary">Voltar as compras</a>
-                    <a data class="btn btn-success align-items-end">Finalizar Compra</a>
-                </div>
+                    <button type="submit" class="btn btn-success">Finalizar Compra</button>>
+                </form>
             </div>
         </div>
     </main>

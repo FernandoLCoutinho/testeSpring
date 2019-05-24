@@ -6,6 +6,8 @@
 package br.acaitech.springMVC.FluxoDeVenda.entidades;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -25,17 +27,21 @@ public class Venda implements Serializable {
     private Long id;
 
     @ManyToOne
-    private CarrinhoVenda produtos;
+    private ItemVenda itemVenda;
 
     @OneToOne
     private Cliente cliente;
 
+    @Column(nullable = false)
+    private Boolean vendido;
+
     public Venda() {
     }
 
-    public Venda(CarrinhoVenda produtos, Cliente cliente) {
-        this.produtos = produtos;
+    public Venda(ItemVenda itemVenda, Cliente cliente, Boolean vendido) {
+        this.itemVenda = itemVenda;
         this.cliente = cliente;
+        this.vendido = vendido;
     }
 
     public Long getId() {
@@ -46,12 +52,12 @@ public class Venda implements Serializable {
         this.id = id;
     }
 
-    public CarrinhoVenda getProdutos() {
-        return produtos;
+    public ItemVenda getItemVenda() {
+        return itemVenda;
     }
 
-    public void setProdutos(CarrinhoVenda produtos) {
-        this.produtos = produtos;
+    public void setItemVenda(ItemVenda itemVenda) {
+        this.itemVenda = itemVenda;
     }
 
     public Cliente getCliente() {
@@ -60,6 +66,14 @@ public class Venda implements Serializable {
 
     public void setCliente(Cliente cliente) {
         this.cliente = cliente;
+    }
+
+    public Boolean getVendido() {
+        return vendido;
+    }
+
+    public void setVendido(Boolean vendido) {
+        this.vendido = vendido;
     }
 
 }

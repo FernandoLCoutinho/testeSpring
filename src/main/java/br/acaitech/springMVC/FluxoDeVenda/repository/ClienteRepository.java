@@ -5,14 +5,15 @@
  */
 package br.acaitech.springMVC.FluxoDeVenda.repository;
 
-import br.acaitech.springMVC.FluxoDeVenda.entidades.Venda;
+import br.acaitech.springMVC.FluxoDeVenda.entidades.Cliente;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 /**
  *
- * @author Coutinho's
+ * @author fernando.lcoutinho
  */
 @Repository
-public interface VendaRepository extends JpaRepository<Venda, Integer>{
+public interface ClienteRepository extends JpaRepository<Cliente, Integer>{
+    
 }

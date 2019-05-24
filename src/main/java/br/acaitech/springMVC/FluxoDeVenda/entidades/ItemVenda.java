@@ -6,6 +6,7 @@
 package br.acaitech.springMVC.FluxoDeVenda.entidades;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -30,13 +31,16 @@ public class ItemVenda implements Serializable {
     @Column(nullable = false)
     private Integer quantidade;
 
+    @Column(nullable = false, precision = 2)
+    private BigDecimal preçoItem;
+
     public ItemVenda() {
     }
 
-    public ItemVenda(Long id,Produto produto, Integer quantidade) {
-        this.id = id;
+    public ItemVenda(Produto produto, Integer quantidade, BigDecimal preçoItem) {
         this.produto = produto;
         this.quantidade = quantidade;
+        this.preçoItem = preçoItem;
     }
 
     public Long getId() {
@@ -63,11 +67,17 @@ public class ItemVenda implements Serializable {
         this.quantidade = quantidade;
     }
 
-    @Override
-    public String toString() {
-        return "ItemVenda{" + "id=" + id + "produto=" + produto + "quantidade=" + quantidade + '}';
+    public BigDecimal getPreçoItem() {
+        return preçoItem;
     }
 
-    
-    
+    public void setPreçoItem(BigDecimal preçoItem) {
+        this.preçoItem = preçoItem;
+    }
+
+    @Override
+    public String toString() {
+        return "ItemVenda{" + "id=" + id + ", produto=" + produto + ", quantidade=" + quantidade + ", " + '}';
+    }
+
 }
