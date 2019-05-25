@@ -5,8 +5,8 @@
  */
 package br.acaitech.springMVC.FluxoDeVenda.repository;
 
-import br.acaitech.springMVC.FluxoDeVenda.entidades.Venda;
-import org.springframework.data.jpa.repository.JpaRepository;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -14,5 +14,11 @@ import org.springframework.stereotype.Repository;
  * @author Coutinho's
  */
 @Repository
-public interface VendaRepository extends JpaRepository<Venda, Integer>{
+public class VendaRepository {
+    
+    @PersistenceContext
+    private EntityManager entityManager;
+    
+    
+    
 }

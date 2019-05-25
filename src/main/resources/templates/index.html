@@ -54,17 +54,17 @@
                 <!-- store products -->
                 <div class="row" data-th-if="${produtos != null}">
                     <!-- product -->
-                    <form class="col-md-4 col-xs-6" data-th-if="${prod.disponivel}" data-th-each="prod, stat: ${produtos}">
+                    <div class="col-md-4 col-xs-6" data-th-if="${prod.disponivel}" data-th-each="prod, stat: ${produtos}">
                         <div class="produto">
                             <div class="produto-body">
                                 <h3 class="produto-nome" data-th-text="${prod.nome}"></h3>
                                 <h4 class="produto-preco" data-th-text="${prod.precoVenda}"></h4>
                             </div>
                             <div class="adicionar-no-carrinho">
-                                <button class="btn btn-outline-success add-to-cart-btn" type="submit"><i class=" zmdi zmdi-shopping-cart"></i></button>>
+                                <a class="btn btn-outline-success add-to-cart-btn" th:href="@{/carrinho/adicionar/{id}(id=${prod.id})}"><i class=" zmdi zmdi-shopping-cart"></i></a>
                             </div>
                         </div>
-                    </form>
+                    </div>
                     <!-- /product -->
                 </div>
         </section>

@@ -6,36 +6,35 @@
 package br.acaitech.springMVC.FluxoDeVenda.entidades;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
 
 /**
  *
  * @author Coutinho's
  */
 @Entity
-public class Venda implements Serializable {
+public class CarrinhoVenda implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    private CarrinhoVenda produtos;
+    @OneToMany(fetch = FetchType.LAZY)
+    private Set<ItemVenda> itens;
 
-    @OneToOne
-    private Cliente cliente;
-
-    public Venda() {
+    public CarrinhoVenda() {
     }
 
-    public Venda(CarrinhoVenda produtos, Cliente cliente) {
-        this.produtos = produtos;
-        this.cliente = cliente;
+    public CarrinhoVenda(Set<ItemVenda> itens) {
+        this.itens = itens;
     }
 
     public Long getId() {
@@ -46,20 +45,17 @@ public class Venda implements Serializable {
         this.id = id;
     }
 
-    public CarrinhoVenda getProdutos() {
-        return produtos;
+    public Set<ItemVenda> getItens() {
+        return itens;
     }
 
-    public void setProdutos(CarrinhoVenda produtos) {
-        this.produtos = produtos;
+    public void setItens(Set<ItemVenda> itens) {
+        this.itens = itens;
     }
 
-    public Cliente getCliente() {
-        return cliente;
-    }
-
-    public void setCliente(Cliente cliente) {
-        this.cliente = cliente;
+    @Override
+    public String toString() {
+        return "CarrinhoVenda{" + "id=" + id + "itens=" + itens + '}';
     }
 
 }
